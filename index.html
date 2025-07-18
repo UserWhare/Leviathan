@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leviathan</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="https://i.imgur.com/WhCWd2W.png">
+  <script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'u')) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</head>
+<body>
+  <div id="terminal-container">
+    <div id="logo-container">
+      <img src="https://i.imgur.com/WhCWd2W.png" alt="Logo" id="logo"/>
+    </div>
+    <div id="terminal"></div>
+    <div id="input-line">
+      <span id="prompt"></span>
+      <input id="cmdline" type="text" autocomplete="off" spellcheck="false" autofocus />
+    </div>
+  </div>
+  <script src="script.js" defer></script>
+</body>
+</html>

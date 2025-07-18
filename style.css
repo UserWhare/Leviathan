@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+
+body {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  font-family: 'Fira Code', monospace;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#terminal-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  overflow: hidden;
+}
+
+#logo-container {
+  padding-bottom: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+#logo {
+  max-width: 450px; 
+  width: 90%;
+  filter: drop-shadow(0 0 7px rgba(88, 166, 255, 0.5));
+  transition: filter 0.5s ease-in-out;
+}
+
+#logo.flag1 { filter: drop-shadow(0 0 10px #56d364); }
+#logo.flag2 { filter: drop-shadow(0 0 10px #e8e82e); }
+#logo.flag3 { filter: drop-shadow(0 0 10px #f5a623); }
+#logo.flag4 { filter: drop-shadow(0 0 10px #f85149); }
+
+#terminal {
+  flex-grow: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#input-line {
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+  flex-shrink: 0;
+}
+
+#prompt {
+  color: #58a6ff;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#cmdline {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #c9d1d9;
+  font-family: 'Fira Code', monospace;
+  font-size: 1rem;
+  flex-grow: 1;
+  padding-left: 8px;
+}
+
+.success-message { color: #56d364; font-weight: 700; }
+.info-message { color: #79c0ff; }
+.error-message { color: #f85149; }
+.intro-text { color: #8b949e; }
