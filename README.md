@@ -34,7 +34,7 @@ Ambiente de hacking simulado no navegador. O objetivo é capturar 4 flags atrav�
 
 1.  Clone o repositório:
     ```bash
-    git clone [https://github.com/UserWhare/Leviathan.git](https://github.com/UserWhare/Leviathan.git)
+    git clone https://github.com/UserWhare/Leviathan.git
     ```
 2.  Abra o `index.html` no navegador.
 
