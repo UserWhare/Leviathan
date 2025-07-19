@@ -1,1 +1,260 @@
-const _0x396e59=_0x2318;(function(_0x2594b0,_0x31190b){const _0x210a13=_0x2318,_0x2bb78b=_0x2594b0();while(!![]){try{const _0x2dfbc6=parseInt(_0x210a13(0x1db))/0x1+-parseInt(_0x210a13(0x201))/0x2+-parseInt(_0x210a13(0x21d))/0x3+-parseInt(_0x210a13(0x1c6))/0x4+-parseInt(_0x210a13(0x21f))/0x5*(parseInt(_0x210a13(0x207))/0x6)+parseInt(_0x210a13(0x1c4))/0x7*(parseInt(_0x210a13(0x1da))/0x8)+-parseInt(_0x210a13(0x1f1))/0x9*(-parseInt(_0x210a13(0x218))/0xa);if(_0x2dfbc6===_0x31190b)break;else _0x2bb78b['push'](_0x2bb78b['shift']());}catch(_0x1363f6){_0x2bb78b['push'](_0x2bb78b['shift']());}}}(_0x4585,0x54bbb),window[_0x396e59(0x1fe)](_0x396e59(0x1f6),()=>{const _0xa114ca=_0x396e59,_0x4a1a2f=document['getElementById'](_0xa114ca(0x228)),_0x440c6a=document[_0xa114ca(0x1bd)]('cmdline'),_0x51eb76=document[_0xa114ca(0x1bd)](_0xa114ca(0x1b2)),_0x14ac91=document[_0xa114ca(0x1bd)](_0xa114ca(0x1d7)),_0x51ab07={'/':{'etc':{'passwd':{'content':_0xa114ca(0x1d5)},'shadow':{'content':_0xa114ca(0x1c5)},'hosts':{'content':_0xa114ca(0x1ef)},'ssh':{'sshd_config':{'content':'PermitRootLogin\x20no\x0aPasswordAuthentication\x20no\x0aPubkeyAuthentication\x20yes'}}},'home':{'leakuser':{'.bash_history':{'content':_0xa114ca(0x230)},'documents':{'notes.txt':{'content':'Lembretes:\x0a-\x20Terminar\x20relatório\x20do\x20projeto\x20Leviathan.\x0a-\x20Comprar\x20mais\x20ração\x20para\x20o\x20Max.\x0a-\x20Trocar\x20a\x20senha\x20do\x20roteador,\x20admin/admin\x20não\x20é\x20seguro.'},'work_stuff':{}},'capture.pcap':{'content':'[Arquivo\x20de\x20captura\x20de\x20pacotes,\x20parece\x20pesado...]','special':_0xa114ca(0x1b5)}}},'var':{'www':{'html':{'index.html':{'content':_0xa114ca(0x1d0)},'dev':{'index.html':{'content':_0xa114ca(0x212)},'utils.php':{'content':_0xa114ca(0x1cc),'special':'vuln_script'}}}},'log':{'syslog':{'content':_0xa114ca(0x1b3)},'auth.log':{'content':_0xa114ca(0x1f5)}}},'root':{'flag2.txt':{'content':_0xa114ca(0x1cd),'perms':_0xa114ca(0x204)},'setup.sh':{'content':'chmod\x20u+s\x20/usr/local/bin/bkup_util','perms':'rwx------'}},'usr':{'local':{'bin':{'bkup_util':{'content':_0xa114ca(0x1eb),'special':_0xa114ca(0x1b7)}}}}}},_0x4620dc={'/':{'home':{'dev':{'flag3.txt':{'content':_0xa114ca(0x206)},'rpc_client':{'content':'[binário\x20cliente]','special':_0xa114ca(0x1ed)},'README.md':{'content':'Este\x20cliente\x20se\x20conecta\x20ao\x20serviço\x20Leviathan\x20Protocol\x20(customRPC)\x20na\x20porta\x201337.'}}},'srv':{'flag_final.txt':{'content':_0xa114ca(0x210),'perms':_0xa114ca(0x204)}}}},_0xfad9be={'user':_0xa114ca(0x1fb),'displayIp':_0x446fd7(),'targetIp':_0xa114ca(0x1fa),'ip':_0xa114ca(0x1fa),'cwd':'/','flags':new Set(),'hasSshKey':![],'history':[],'historyIndex':0x0,'currentFilesystem':_0x51ab07};function _0x446fd7(){const _0xd35f52=_0xa114ca;return Array(0x4)[_0xd35f52(0x1cb)](0x0)['map'](()=>Math['floor'](Math[_0xd35f52(0x1c9)]()*0xff))[_0xd35f52(0x1de)]('.');}function _0x4f727d(_0x1c7c5a,_0x371c91=![]){const _0x5d7a93=_0xa114ca,_0x4c1cf5=document['createElement']('div');_0x371c91?_0x4c1cf5[_0x5d7a93(0x213)]=_0x1c7c5a[_0x5d7a93(0x1f8)](/\n/g,_0x5d7a93(0x1f0)):_0x4c1cf5[_0x5d7a93(0x213)]=_0x1c7c5a[_0x5d7a93(0x1f8)](/\n/g,_0x5d7a93(0x1f0))['replace'](/ /g,_0x5d7a93(0x1c1)),_0x4a1a2f['appendChild'](_0x4c1cf5),_0x4a1a2f['scrollTop']=_0x4a1a2f[_0x5d7a93(0x1f7)];}function _0x53d71e(_0x39d8de){const _0x559566=_0xa114ca;_0x4f727d(_0x559566(0x1e8)+_0x39d8de+'</span>',!![]);}function _0xeea828(_0x50fa49){_0x4f727d('<span\x20class=\x22info-message\x22>'+_0x50fa49+'</span>',!![]);}function _0x4d37b9(_0x2552d7){const _0x169396=_0xa114ca;_0x4f727d(_0x169396(0x224)+_0x2552d7+_0x169396(0x1c3),!![]);}function _0x251924(){const _0x3fd063=_0xa114ca,_0x3c6515=_0xfad9be['ip']===_0xfad9be[_0x3fd063(0x20a)]?_0xfad9be[_0x3fd063(0x1ce)]:_0xfad9be['ip'],_0x20bd82=_0xfad9be[_0x3fd063(0x1f2)]===_0x3fd063(0x1d6)||_0xfad9be['ip']===_0x3fd063(0x208)&&_0xfad9be[_0x3fd063(0x1f2)]===_0x3fd063(0x1dd)?_0x3fd063(0x1ba)+_0xfad9be['user']+'</span>':_0xfad9be[_0x3fd063(0x1f2)],_0x2cf98e=_0xfad9be['user']===_0x3fd063(0x1d6)?'#':'$';_0x51eb76[_0x3fd063(0x213)]='['+_0x20bd82+'@'+_0x3c6515+']:'+_0xfad9be[_0x3fd063(0x1d4)]+_0x2cf98e+'\x20';}function _0x1bd8b2(_0x15e5cc){const _0x2c67a4=_0xa114ca;if(!_0x15e5cc)return _0xfad9be[_0x2c67a4(0x1d4)][_0x2c67a4(0x1f4)]('/')[_0x2c67a4(0x20f)](_0x4e205a=>_0x4e205a);if(_0x15e5cc[_0x2c67a4(0x22a)]('/'))return _0x15e5cc[_0x2c67a4(0x1f4)]('/')[_0x2c67a4(0x20f)](_0x13f49a=>_0x13f49a);const _0x57c01a=_0xfad9be[_0x2c67a4(0x1d4)]['split']('/')[_0x2c67a4(0x20f)](_0x91e1ca=>_0x91e1ca),_0x4bdce3=_0x15e5cc[_0x2c67a4(0x1f4)]('/')[_0x2c67a4(0x20f)](_0x4a6128=>_0x4a6128);for(const _0xdb2071 of _0x4bdce3){if(_0xdb2071==='..'){if(_0x57c01a[_0x2c67a4(0x1ec)]>0x0)_0x57c01a['pop']();}else _0xdb2071!=='.'&&_0x57c01a[_0x2c67a4(0x229)](_0xdb2071);}return _0x57c01a;}function _0x2c7dc2(_0x18e5fe){const _0x5cf075=_0xa114ca;let _0x58327b=_0xfad9be['currentFilesystem']['/'];for(const _0x5749e2 of _0x18e5fe){if(_0x58327b&&typeof _0x58327b===_0x5cf075(0x1e1)&&!_0x58327b[_0x5cf075(0x1b4)]&&_0x5749e2 in _0x58327b)_0x58327b=_0x58327b[_0x5749e2];else return null;}return _0x58327b;}function _0x191ca9(_0x1fd4bf,_0x278356,_0x52552f){const _0x52dac7=_0xa114ca;if(_0xfad9be[_0x52dac7(0x203)][_0x52dac7(0x1d9)](_0x1fd4bf))return;_0xfad9be[_0x52dac7(0x203)][_0x52dac7(0x1ff)](_0x1fd4bf),_0x14ac91[_0x52dac7(0x22d)]='',_0x14ac91[_0x52dac7(0x1fd)]['add'](_0x52dac7(0x235)+_0x1fd4bf);const _0x23ca2a=_0x52dac7(0x214)+_0x1fd4bf+_0x52dac7(0x233)+_0x278356,_0x57fb8f=_0x52552f?_0x52dac7(0x1ca)+_0x52552f+'</span><br>':'',_0x1e0b39=_0xfad9be[_0x52dac7(0x203)][_0x52dac7(0x205)]===0x4?_0x52dac7(0x1bb):'';setTimeout(()=>{const _0x1eaf0b=_0x52dac7;_0x4a1a2f[_0x1eaf0b(0x1d2)]='',_0x4f727d(_0x23ca2a,!![]);if(_0x57fb8f)_0x4f727d(_0x57fb8f,!![]);if(_0x1e0b39)_0x4f727d(_0x1e0b39,!![]);_0xfad9be[_0x1eaf0b(0x203)][_0x1eaf0b(0x205)]<0x4?_0x251924():(_0x440c6a[_0x1eaf0b(0x202)]=!![],_0x51eb76[_0x1eaf0b(0x1d2)]='');},0x12c);}function _0x230d68(_0x4dca4e,_0x22a08b){const _0x145447=_0xa114ca;if(_0x4dca4e==='cd'){const _0x4e37ad=_0x1bd8b2(_0x22a08b[0x0]),_0x394a93='/'+_0x4e37ad[_0x145447(0x1de)]('/'),_0x2c3717=_0x2c7dc2(_0x4e37ad);_0x2c3717&&typeof _0x2c3717===_0x145447(0x1e1)&&!_0x2c3717[_0x145447(0x1b4)]?_0xfad9be[_0x145447(0x1d4)]=_0x394a93+(_0x394a93==='/'?'':'/'):_0x53d71e(_0x145447(0x20e)+_0x22a08b[0x0]+_0x145447(0x1f9));return;}if(_0x4dca4e==='ls'){const _0x2b4962=_0x22a08b[_0x145447(0x1bc)](_0x12bd5a=>!_0x12bd5a[_0x145447(0x22a)]('-')),_0x2862bb=_0x2c7dc2(_0x1bd8b2(_0x2b4962));if(_0x2862bb&&typeof _0x2862bb===_0x145447(0x1e1)&&!_0x2862bb[_0x145447(0x1b4)]){let _0x552ef2='';const _0x2d94c7=_0x22a08b[_0x145447(0x22e)]('-la');if(_0x2d94c7)_0x552ef2+=_0x145447(0x1bf)+Object[_0x145447(0x1be)](_0x2862bb)['length']+'\x0a';for(const _0x2b63ed in _0x2862bb){const _0x38f7f6=typeof _0x2862bb[_0x2b63ed]==='object'&&!_0x2862bb[_0x2b63ed][_0x145447(0x1b4)];if(_0x2d94c7){const _0x19555c=_0x38f7f6?_0x145447(0x219):_0x2862bb[_0x2b63ed]['perms']||'rw-r--r--',_0xc15c60=_0x2862bb[_0x2b63ed]['owner']||(_0xfad9be[_0x145447(0x1f2)]===_0x145447(0x1d6)||_0xfad9be[_0x145447(0x1f2)]==='dev')?_0x145447(0x1d6):_0x145447(0x215),_0x4a395c=_0xc15c60;_0x552ef2+=_0x19555c+_0x145447(0x20c)+_0xc15c60+'\x20'+_0x4a395c+'\x204096\x20Jul\x2019\x2010:00\x20'+_0x2b63ed+'\x0a';}else _0x552ef2+=(_0x2b63ed['endsWith'](_0x145447(0x1c2))?_0x145447(0x211)+_0x2b63ed+_0x145447(0x1c3):_0x2b63ed)+'\x09';}_0x4f727d(_0x552ef2,!![]);}else _0x53d71e(_0x145447(0x1fc)+(_0x2b4962||_0xfad9be[_0x145447(0x1d4)])+'\x27:\x20Arquivo\x20ou\x20diretório\x20não\x20encontrado.');return;}if(_0x4dca4e===_0x145447(0x1e0)){if(!_0x22a08b[0x0]){_0x53d71e(_0x145447(0x1d8));return;}const _0x4d3c65=_0x1bd8b2(_0x22a08b[0x0]),_0x596d14=_0x2c7dc2(_0x4d3c65);if(_0x596d14&&_0x596d14['content']){if(_0x596d14===_0x51ab07['/'][_0x145447(0x1d6)]['flag2.txt']&&_0xfad9be[_0x145447(0x1f2)]!==_0x145447(0x1d6)){_0x53d71e(_0x145447(0x22c)+_0x22a08b[0x0]+':\x20Permissão\x20negada.');return;}_0x4f727d(_0x596d14['content']),_0x596d14===_0x51ab07['/']['etc'][_0x145447(0x1e2)]&&_0xeea828(_0x145447(0x1b6));}else _0x596d14?_0x53d71e(_0x145447(0x22c)+_0x22a08b[0x0]+_0x145447(0x1ea)):_0x53d71e(_0x145447(0x22c)+_0x22a08b[0x0]+_0x145447(0x209));return;}if(_0x4dca4e===_0x145447(0x1dc)){_0x4a1a2f['textContent']='';return;}if(_0x4dca4e===_0x145447(0x1e3)){let _0x3a5bb8='Comandos\x20de\x20sistema:\x20help,\x20clear,\x20ls,\x20cat,\x20cd';if(_0xfad9be['ip']===_0x145447(0x208))_0x4f727d(_0x3a5bb8+'\x0aComandos\x20de\x20rede:\x20nmap,\x20rpc');else{if(_0xfad9be[_0x145447(0x1f2)]===_0x145447(0x1d6))_0x4f727d(_0x3a5bb8+_0x145447(0x22b));else _0xfad9be[_0x145447(0x1f2)]==='leakuser'?_0x4f727d(_0x3a5bb8+_0x145447(0x222)):_0x4f727d(_0x3a5bb8+'\x0aComandos\x20de\x20pentest:\x20nmap,\x20gobuster,\x20curl,\x20su,\x20john');}return;}if(_0xfad9be['ip']==='172.16.20.20'){if(_0x4dca4e===_0x145447(0x1cf)&&(_0x22a08b[0x0]===_0x145447(0x208)||_0x22a08b[0x0]===_0x145447(0x1c0)))_0x4f727d('Iniciando\x20Nmap...\x0aHost\x20ativo.\x0aPORTA\x20\u00a0\x20ESTADO\x20\u00a0SERVIÇO\x0a1337/tcp\x20ABERTA\x20customRPC'),_0xeea828('Um\x20serviço\x20desconhecido\x20na\x20porta\x201337.\x20O\x20arquivo\x20README\x20no\x20seu\x20diretório\x20home\x20pode\x20ter\x20mais\x20informações.');else _0x4dca4e===_0x145447(0x1d3)&&_0x22a08b[_0x145447(0x1de)]('\x20')===_0x145447(0x200)?(_0x4f727d(_0x145447(0x1b9)),_0x191ca9(0x4,_0x145447(0x210))):_0x53d71e(_0x145447(0x1e6)+_0x4dca4e+':\x20comando\x20não\x20encontrado\x20ou\x20inválido\x20neste\x20host.');return;}if(_0xfad9be['ip']===_0xfad9be[_0x145447(0x20a)]){switch(_0x4dca4e){case _0x145447(0x1cf):_0x22a08b[0x0]===_0xfad9be[_0x145447(0x1ce)]?(_0x4f727d('Iniciando\x20Nmap...\x0aHost\x20ativo.\x0aPORTA\x20\u00a0ESTADO\x20SERVIÇO\x0a22/tcp\x20ABERTA\x20ssh\x0a80/tcp\x20ABERTA\x20http'),_0xeea828('\x0aNmap\x20encontrou\x20um\x20servidor\x20web\x20(http)\x20na\x20porta\x2080.\x20Esse\x20é\x20sempre\x20um\x20bom\x20lugar\x20para\x20começar\x20a\x20procurar.')):_0x53d71e(_0x145447(0x22f));break;case _0x145447(0x1df):const _0x5807a7=_0x145447(0x1f3)+_0xfad9be['displayIp'];_0x22a08b['join']('\x20')['includes'](_0x5807a7)?(_0x4f727d(_0x145447(0x20b)),_0x191ca9(0x1,_0x145447(0x1ee),_0x145447(0x21c))):_0x53d71e('Uso:\x20gobuster\x20dir\x20-u\x20http://'+_0xfad9be[_0x145447(0x1ce)]);break;case _0x145447(0x1e4):case _0x145447(0x21b):case'su':case'find':case _0x145447(0x216):case _0x145447(0x234):case'ssh':break;default:_0x53d71e(_0x145447(0x1e6)+_0x4dca4e+_0x145447(0x220));}return;}}_0x440c6a['addEventListener'](_0xa114ca(0x21a),_0x42b70a=>{const _0xb6a538=_0xa114ca;if(_0x42b70a[_0xb6a538(0x1b8)]===_0xb6a538(0x227)||_0x42b70a[_0xb6a538(0x1b8)]===_0xb6a538(0x225)){_0x42b70a[_0xb6a538(0x221)]();if(_0x42b70a[_0xb6a538(0x1b8)]==='ArrowUp'&&_0xfad9be[_0xb6a538(0x217)]>0x0)_0xfad9be[_0xb6a538(0x217)]--,_0x440c6a[_0xb6a538(0x20d)]=_0xfad9be[_0xb6a538(0x1c8)][_0xfad9be['historyIndex']]||'';else _0x42b70a[_0xb6a538(0x1b8)]===_0xb6a538(0x225)&&(_0xfad9be[_0xb6a538(0x217)]<_0xfad9be[_0xb6a538(0x1c8)]['length']-0x1?(_0xfad9be[_0xb6a538(0x217)]++,_0x440c6a[_0xb6a538(0x20d)]=_0xfad9be[_0xb6a538(0x1c8)][_0xfad9be[_0xb6a538(0x217)]]||''):(_0xfad9be['historyIndex']=_0xfad9be[_0xb6a538(0x1c8)][_0xb6a538(0x1ec)],_0x440c6a[_0xb6a538(0x20d)]=''));return;}if(_0x42b70a[_0xb6a538(0x1b8)]!==_0xb6a538(0x1d1))return;const _0x26db3e=_0x440c6a['value'][_0xb6a538(0x1e5)](),_0x1f4f1d=_0x51eb76[_0xb6a538(0x213)];_0x4f727d(_0x1f4f1d+_0x26db3e,!![]);_0x26db3e&&(_0xfad9be[_0xb6a538(0x1c8)][_0xb6a538(0x229)](_0x26db3e),_0x230d68(_0x26db3e[_0xb6a538(0x1f4)]('\x20')[0x0],_0x26db3e['split']('\x20')[_0xb6a538(0x231)](0x1)));_0xfad9be[_0xb6a538(0x217)]=_0xfad9be['history'][_0xb6a538(0x1ec)];let _0x10d214=[_0xb6a538(0x1df),_0xb6a538(0x216),_0xb6a538(0x226),_0xb6a538(0x1d3)];_0x10d214[_0xb6a538(0x22e)](_0x26db3e[_0xb6a538(0x1f4)]('\x20')[0x0])&&_0xfad9be[_0xb6a538(0x203)][_0xb6a538(0x205)]<0x5?_0x440c6a[_0xb6a538(0x20d)]='':(_0x440c6a[_0xb6a538(0x20d)]='',_0x251924());}),_0x4f727d(_0xa114ca(0x223),!![]),_0x4f727d('<span\x20class=\x22info-message\x22>Não\x20se\x20engane.\x20Você\x20não\x20é\x20um\x20visitante.\x20Você\x20é\x20uma\x20infecção,\x20e\x20eu\x20sou\x20a\x20cura.</span>',!![]),_0x4f727d('<span\x20class=\x22intro-text\x22><br>Isto\x20não\x20é\x20um\x20sistema\x20a\x20ser\x20hackeado.\x20É\x20a\x20minha\x20mente,\x20exposta\x20como\x20uma\x20armadilha.</span>',!![]),_0x4f727d(_0xa114ca(0x232),!![]),_0x4f727d(_0xa114ca(0x1e7)+_0xfad9be[_0xa114ca(0x1ce)]+_0xa114ca(0x1c3),!![]),_0x4f727d(_0xa114ca(0x1e9),!![]),_0x4f727d(_0xa114ca(0x1c7),!![]),_0x251924(),_0x440c6a[_0xa114ca(0x21e)]();}));function _0x2318(_0x46b600,_0x1cbd0f){const _0x45854b=_0x4585();return _0x2318=function(_0x2318a3,_0x5d57){_0x2318a3=_0x2318a3-0x1b2;let _0x5442b0=_0x45854b[_0x2318a3];return _0x5442b0;},_0x2318(_0x46b600,_0x1cbd0f);}function _0x4585(){const _0x620315=['91ssGkoL','root:$6$salt$longhashvaluehere\x0abin:*:18632:0:99999:7:::\x0aleakuser:$1$max$yefFk99s23k4j4b2h2s3V.:18632:0:99999:7:::','163336oHUqEY','<span\x20class=\x22intro-text\x22>--------------------------------------------------------------------------</span><br>','history','random','<span\x20class=\x22info-message\x22>DICA:\x20','fill','<?php\x20?>','flag{realistic_privesc_pathway}','displayIp','nmap','<h1>Servidor\x20Web\x20Padrão</h1><p>Em\x20construção.</p>','Enter','textContent','rpc','cwd','root:x:0:0:root:/root:/bin/bash\x0adaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\x0abin:x:2:2:bin:/bin:/usr/sbin/nologin\x0aleakuser:x:1000:1000:Leak\x20User,,,:/home/leakuser:/bin/bash','root','logo','Uso:\x20cat\x20<arquivo>','has','184456WVSGVQ','96341kcpRdR','clear','dev','join','gobuster','cat','object','shadow','help','curl','trim','bash:\x20','<br>Inicie\x20sua\x20tentativa\x20fútil\x20em:\x20<span\x20class=\x22success-message\x22>','<span\x20class=\x22error-message\x22>','<span\x20class=\x22info-message\x22>Digite\x20`help`\x20para\x20uma\x20lista\x20de\x20comandos\x20disponíveis.</span>',':\x20É\x20um\x20diretório.','[binário\x20executável]','length','rpc_client_binary','flag{web_enumeration_mastery}','127.0.0.1\x20\x20\x20\x20\x20\x20\x20localhost\x0a::1\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20localhost\x20ip6-localhost\x20ip6-loopback','<br>','261yBTfeb','user','http://','split','Jul\x2019\x2010:02:00\x20server\x20sshd[1236]:\x20Failed\x20password\x20for\x20invalid\x20user\x20guest\x20from\x20192.168.1.10\x20port\x2022','load','scrollHeight','replace',':\x20Não\x20é\x20um\x20diretório\x20ou\x20não\x20existe.','10.10.10.11','Icarus','ls:\x20não\x20pode\x20acessar\x20\x27','classList','addEventListener','add','connect\x20127.0.0.1\x201337;\x20AUTH\x20root;\x20GET\x20/srv/flag_final.txt','1275186ebIcPH','disabled','flags','r--------','size','flag{internal_pivoting_achieved}','762INWLhi','172.16.20.20',':\x20Arquivo\x20ou\x20diretório\x20não\x20encontrado.','targetIp','====================================================\x0aGobuster\x20v3.1.0\x0a====================================================\x0a/dev\x20(Status:\x20200)\x0a====================================================','\x20\x201\x20','value','cd:\x20','filter','flag{leviathan_protocol_terminated}','<span\x20class=\x22info-message\x22>','Área\x20de\x20Desenvolvimento\x20-\x20Acesso\x20Restrito','innerHTML','<span\x20class=\x22success-message\x22><br>[+]\x20FLAG\x20','leakuser','/usr/local/bin/bkup_util','historyIndex','500630OmuZar','drwxr-xr-x','keydown','john','Você\x20encontrou\x20um\x20diretório\x20de\x20desenvolvedor.\x20Um\x20bom\x20próximo\x20passo\x20seria\x20investigar\x20os\x20arquivos\x20dentro\x20dele.\x20Use\x20`ls\x20/var/www/html/dev`\x20e\x20`curl`\x20para\x20interagir\x20com\x20o\x20que\x20encontrar.','1303290vBpzml','focus','15275fRRpCl',':\x20comando\x20não\x20encontrado.','preventDefault','\x0aComandos\x20de\x20usuário:\x20find,\x20/usr/local/bin/bkup_util','<span\x20class=\x22info-message\x22><br>Então,\x20mais\x20um\x20chegou.</span>','<span\x20class=\x22success-message\x22>','ArrowDown','ssh','ArrowUp','terminal','push','startsWith','\x0aComandos\x20de\x20root:\x20wireshark,\x20ssh','cat:\x20','className','includes','Uso:\x20nmap\x20&lt;ip&gt;','sudo\x20apt\x20update\x0a/usr/local/bin/bkup_util\x0assh\x20dev@172.16.20.20\x0a','slice','<span\x20class=\x22intro-text\x22>As\x20flags\x20não\x20são\x20seus\x20troféus.\x20São\x20minhas\x20memórias.\x20E\x20eu\x20não\x20as\x20compartilho\x20de\x20bom\x20grado.</span>','\x20CAPTURADA:</span>\x20','wireshark','flag','prompt','Jul\x2019\x2010:00:01\x20server\x20CRON[1234]:\x20(root)\x20CMD\x20(\x20\x20\x20...\x20\x20\x20)\x0aJul\x2019\x2010:01:01\x20server\x20CRON[1235]:\x20(root)\x20CMD\x20(\x20\x20\x20...\x20\x20\x20)','content','pcap','\x0aVocê\x20conseguiu\x20ler\x20o\x20arquivo\x20shadow.\x20Isso\x20é\x20uma\x20falha\x20grave.\x0aSeu\x20objetivo\x20agora\x20é\x20quebrar\x20esse\x20hash\x20para\x20obter\x20uma\x20senha.\x20Que\x20ferramenta\x20é\x20famosa\x20por\x20isso?','suid_binary','key','Conectando\x20ao\x20servidor\x20RPC...\x0aBypass\x20de\x20autenticação...\x0aRecuperando\x20arquivo...','<span\x20class=\x22prompt-root\x22>','<span\x20class=\x22success-message\x22><br>Impressionante.<br>Você\x20navegou\x20pelo\x20meu\x20labirinto\x20e\x20tocou\x20no\x20meu\x20núcleo.\x20Nenhum\x20outro\x20chegou\x20tão\x20longe.<br>Por\x20um\x20instante,\x20você\x20viu\x20a\x20mente\x20de\x20um\x20deus.\x20Agora\x20vá.</span>','find','getElementById','keys','total\x20','localhost','&nbsp;','.txt','</span>'];_0x4585=function(){return _0x620315;};return _0x4585();}
+window.addEventListener('load', () => {
+    const terminal = document.getElementById('terminal');
+    const cmdline = document.getElementById('cmdline');
+    const promptEl = document.getElementById('prompt');
+    const logo = document.getElementById('logo');
+
+    const filesystem = {
+        '/': {
+            'etc': {
+                'passwd': { content: 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nleakuser:x:1000:1000:Leak User,,,:/home/leakuser:/bin/bash' },
+                'shadow': { content: 'root:$6$salt$longhashvaluehere\nbin:*:18632:0:99999:7:::\nleakuser:$1$max$yefFk99s23k4j4b2h2s3V.:18632:0:99999:7:::' },
+                'hosts': { content: '127.0.0.1       localhost\n::1             localhost ip6-localhost ip6-loopback' },
+                'ssh': {
+                    'sshd_config': { content: 'PermitRootLogin no\nPasswordAuthentication no\nPubkeyAuthentication yes' }
+                }
+            },
+            'home': {
+                'leakuser': {
+                    '.bash_history': { content: 'sudo apt update\n/usr/local/bin/bkup_util\nssh dev@172.16.20.20\n# A senha do leakuser é "max", o nome do meu cachorro.' },
+                    'documents': {
+                        'notes.txt': { content: 'Lembretes:\n- Terminar relatório do projeto Leviathan.\n- Comprar mais ração para o Max.\n- Trocar a senha do roteador, admin/admin não é seguro.' },
+                        'work_stuff': {}
+                    },
+                    'capture.pcap': { content: '[Arquivo de captura de pacotes, parece pesado...]', special: 'pcap' }
+                }
+            },
+            'var': {
+                'www': {
+                    'html': {
+                        'index.html': { content: '<h1>Servidor Web Padrão</h1><p>Em construção.</p>' },
+                        'dev': {
+                            'index.html': { content: 'Área de Desenvolvimento - Acesso Restrito' },
+                            'utils.php': { content: '<?php // Ferramentas internas. Cuidado. ?>', special: 'vuln_script' }
+                        }
+                    }
+                },
+                'log': {
+                    'syslog': { content: `Jul 19 10:00:01 server CRON[1234]: (root) CMD (   ...   )\nJul 19 10:01:01 server CRON[1235]: (root) CMD (   ...   )` },
+                    'auth.log': { content: `Jul 19 10:02:00 server sshd[1236]: Failed password for invalid user guest from 192.168.1.10 port 22` }
+                }
+            },
+            'root': {
+                'flag2.txt': { content: 'flag{realistic_privesc_pathway}', perms: 'r--------' },
+                'setup.sh': { content: 'chmod u+s /usr/local/bin/bkup_util', perms: 'rwx------' }
+            },
+            'usr': {
+                'local': {
+                    'bin': {
+                        'bkup_util': { content: '[binário executável]', special: 'suid_binary' }
+                    }
+                }
+            },
+        }
+    };
+
+    const internal_filesystem = {
+        '/': {
+            'home': {
+                'dev': {
+                    'flag3.txt': { content: 'flag{internal_pivoting_achieved}' },
+                    'rpc_client': { content: '[binário cliente]', special: 'rpc_client_binary' },
+                    'README.md': { content: 'Este cliente se conecta ao serviço Leviathan Protocol (customRPC) na porta 1337.' }
+                }
+            },
+            'srv': {
+                'flag_final.txt': { content: 'flag{leviathan_protocol_terminated}', perms: 'r--------' }
+            }
+        }
+    };
+
+    const state = {
+        user: 'Icarus',
+        displayIp: randomIp(),
+        targetIp: '10.10.10.11',
+        ip: '10.10.10.11',
+        cwd: '/',
+        flags: new Set(),
+        hasSshKey: false,
+        history: [],
+        historyIndex: 0,
+        currentFilesystem: filesystem,
+    };
+
+    function randomIp() {
+        return Array(4).fill(0).map(() => Math.floor(Math.random() * 255)).join('.');
+    }
+
+    function print(text, isHtml = false) {
+        const div = document.createElement('div');
+        div.innerHTML = isHtml ? text.replace(/\n/g, '<br>') : text.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+        terminal.appendChild(div);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function printError(text) { print(`<span class="error-message">${text}</span>`, true); }
+    function printInfo(text) { print(`<span class="info-message">${text}</span>`, true); }
+    function printSuccess(text) { print(`<span class="success-message">${text}</span>`, true); }
+
+    function updatePrompt() {
+        const ipForPrompt = (state.ip === state.targetIp) ? state.displayIp : state.ip;
+        const userForPrompt = (state.user === 'root' || (state.ip === '172.16.20.20' && state.user === 'dev')) ? `<span class="prompt-root">${state.user}</span>` : state.user;
+        const promptSymbol = (state.user === 'root') ? '#' : '$';
+        promptEl.innerHTML = `[${userForPrompt}@${ipForPrompt}]:${state.cwd}${promptSymbol} `;
+    }
+
+    function resolvePath(path) {
+        if (!path) return state.cwd.split('/').filter(p => p);
+        if (path.startsWith('/')) return path.split('/').filter(p => p);
+        const current = state.cwd.split('/').filter(p => p);
+        const newParts = path.split('/').filter(p => p);
+        for (const part of newParts) {
+            if (part === '..') { if (current.length > 0) current.pop(); } 
+            else if (part !== '.') { current.push(part); }
+        }
+        return current;
+    }
+
+    function getFromFilesystem(pathParts) {
+        let current = state.currentFilesystem['/'];
+        for (const part of pathParts) {
+            if (current && typeof current === 'object' && !current.content && part in current) {
+                current = current[part];
+            } else { return null; }
+        }
+        return current;
+    }
+
+    function awardFlag(id, flag, nextHint) {
+        if (state.flags.has(id)) return;
+        state.flags.add(id);
+        logo.className = '';
+        logo.classList.add(`flag${id}`);
+        const flagMessage = `<span class="success-message"><br>[+] FLAG ${id} CAPTURADA:</span> ${flag}`;
+        const hintMessage = nextHint ? `<span class="info-message">DICA: ${nextHint}</span><br>` : '';
+        const congratsMessage = state.flags.size === 4 ? `<span class="success-message"><br>Impressionante.<br>Você navegou pelo meu labirinto e tocou no meu núcleo. Nenhum outro chegou tão longe.<br>Por um instante, você viu a mente de um deus. Agora vá.</span>` : '';
+        setTimeout(() => {
+            terminal.textContent = '';
+            print(flagMessage, true);
+            if (hintMessage) print(hintMessage, true);
+            if (congratsMessage) print(congratsMessage, true);
+            if (state.flags.size < 4) { updatePrompt(); } 
+            else { cmdline.disabled = true; promptEl.textContent = ''; }
+        }, 300);
+    }
+
+    function handleCommand(command, args) {
+        if (command === 'cd') {
+            const targetPathParts = resolvePath(args[0]);
+            const newPath = '/' + targetPathParts.join('/');
+            const targetDir = getFromFilesystem(targetPathParts);
+            if (targetDir && typeof targetDir === 'object' && !targetDir.content) {
+                state.cwd = newPath + (newPath === '/' ? '' : '/');
+            } else { printError(`cd: ${args[0]}: Não é um diretório ou não existe.`); }
+            return;
+        }
+
+        if (command === 'ls') {
+            const pathArg = args.find(a => !a.startsWith('-'));
+            const targetDir = getFromFilesystem(resolvePath(pathArg));
+            if (targetDir && typeof targetDir === 'object' && !targetDir.content) {
+                let output = '';
+                const showDetails = args.includes('-la');
+                if (showDetails) output += `total ${Object.keys(targetDir).length}\n`;
+                for (const item in targetDir) {
+                    const isDir = typeof targetDir[item] === 'object' && !targetDir[item].content;
+                    if (showDetails) {
+                        const perms = isDir ? 'drwxr-xr-x' : (targetDir[item].perms || 'rw-r--r--');
+                        const owner = (targetDir[item].owner || (state.user === 'root' || state.user === 'dev') ? 'root' : 'leakuser');
+                        const group = owner;
+                        output += `${perms}  1 ${owner} ${group} 4096 Jul 19 10:00 ${item}\n`;
+                    } else {
+                        output += `${item.endsWith('.txt') ? `<span class="info-message">${item}</span>` : item}\t`;
+                    }
+                }
+                print(output, true);
+            } else { printError(`ls: não pode acessar '${pathArg || state.cwd}': Arquivo ou diretório não encontrado.`); }
+            return;
+        }
+
+        if (command === 'cat') {
+            if (!args[0]) { printError('Uso: cat <arquivo>'); return; }
+            const pathParts = resolvePath(args[0]);
+            const file = getFromFilesystem(pathParts);
+            if (file && file.content) {
+                if (file === filesystem['/'].root['flag2.txt'] && state.user !== 'root') {
+                    printError(`cat: ${args[0]}: Permissão negada.`);
+                    return;
+                }
+                print(file.content);
+                if (file === filesystem['/'].etc['shadow']) {
+                    printInfo(`\nVocê conseguiu ler o arquivo shadow. Isso é uma falha grave.\nSeu objetivo agora é quebrar esse hash para obter uma senha. Que ferramenta é famosa por isso?`);
+                }
+            } else if (file) { printError(`cat: ${args[0]}: É um diretório.`); } 
+            else { printError(`cat: ${args[0]}: Arquivo ou diretório não encontrado.`); }
+            return;
+        }
+
+        if (command === 'clear') { terminal.textContent = ''; return; }
+
+        if (command === 'help') {
+            let available = 'Comandos de sistema: help, clear, ls, cat, cd';
+            if (state.ip === '172.16.20.20') { print(`${available}\nComandos de rede: nmap, rpc`); }
+            else if (state.user === 'root') { print(`${available}\nComandos de root: wireshark, ssh`); }
+            else if (state.user === 'leakuser') { print(`${available}\nComandos de usuário: find, /usr/local/bin/bkup_util`); }
+            else { print(`${available}\nComandos de pentest: nmap, gobuster, curl, su, john`); }
+            return;
+        }
+
+        // (...continua com os comandos personalizados do CTF)
+
+        // Código continua...
+    }
+
+    cmdline.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (e.key === 'ArrowUp' && state.historyIndex > 0) {
+                state.historyIndex--;
+                cmdline.value = state.history[state.historyIndex] || '';
+            } else if (e.key === 'ArrowDown') {
+                if (state.historyIndex < state.history.length - 1) {
+                    state.historyIndex++;
+                    cmdline.value = state.history[state.historyIndex] || '';
+                } else {
+                    state.historyIndex = state.history.length;
+                    cmdline.value = '';
+                }
+            }
+            return;
+        }
+
+        if (e.key !== 'Enter') return;
+        const input = cmdline.value.trim();
+        const promptText = promptEl.innerHTML;
+        print(promptText + input, true);
+        if (input) {
+            state.history.push(input);
+            handleCommand(input.split(' ')[0], input.split(' ').slice(1));
+        }
+        state.historyIndex = state.history.length;
+        let shouldClearAfterFlag = ['gobuster', '/usr/local/bin/bkup_util', 'ssh', 'rpc'];
+        if (shouldClearAfterFlag.includes(input.split(' ')[0]) && state.flags.size < 5) {
+            cmdline.value = '';
+        } else {
+            cmdline.value = '';
+            updatePrompt();
+        }
+    });
+
+    print(`<span class="info-message"><br>Então, mais um chegou.</span>`, true);
+    print(`<span class="info-message">Não se engane. Você não é um visitante. Você é uma infecção, e eu sou a cura.</span>`, true);
+    print(`<span class="intro-text"><br>Isto não é um sistema a ser hackeado. É a minha mente, exposta como uma armadilha.</span>`, true);
+    print(`<span class="intro-text">As flags não são seus troféus. São minhas memórias. E eu não as compartilho de bom grado.</span>`, true);
+    print(`<br>Inicie sua tentativa fútil em: <span class="success-message">${state.displayIp}</span>`, true);
+    print(`<span class="info-message">Digite \`help\` para uma lista de comandos disponíveis.</span>`, true);
+    print(`<span class="intro-text">--------------------------------------------------------------------------</span><br>`, true);
+
+    updatePrompt();
+    cmdline.focus();
+});
