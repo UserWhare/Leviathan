@@ -1,341 +1,633 @@
-window.addEventListener('load', () => {
-    const terminal = document.getElementById('terminal');
-    const cmdline = document.getElementById('cmdline');
-    const promptEl = document.getElementById('prompt');
-    const logo = document.getElementById('logo');
+(() => {
+  "use strict";
 
-    const filesystem = {
-        '/': {
-            'etc': {
-                'passwd': { content: 'root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nleakuser:x:1000:1000:Leak User,,,:/home/leakuser:/bin/bash' },
-                'shadow': { content: 'root:$6$salt$longhashvaluehere\nbin:*:18632:0:99999:7:::\nleakuser:$1$max$yefFk99s23k4j4b2h2s3V.:18632:0:99999:7:::' },
-                'hosts': { content: '127.0.0.1       localhost\n::1             localhost ip6-localhost ip6-loopback' },
-                'ssh': {
-                    'sshd_config': { content: '# Configurações do servidor SSH\nPermitRootLogin no\nPasswordAuthentication no\nPubkeyAuthentication yes' }
-                }
+  const TARGET_HASH = "$1$max$yefFk99s23k4j4b2h2s3V.";
+  const INTERNAL_IP = "172.16.20.20";
+  const FLAGS = {
+    1: "flag{web_enumeration_mastery}",
+    2: "flag{realistic_privesc_pathway}",
+    3: "flag{internal_pivoting_achieved}",
+    4: "flag{leviathan_protocol_terminated}",
+  };
+
+  const targetFilesystem = {
+    "/": {
+      etc: {
+        passwd: {
+          content: "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nleakuser:x:1000:1000:Leak User,,,:/home/leakuser:/bin/bash",
+        },
+        shadow: {
+          content: `root:$6$salt$longhashvaluehere\nleakuser:${TARGET_HASH}:18632:0:99999:7:::`,
+          rootOnly: true,
+        },
+        ssh: {
+          sshd_config: {
+            content: "PermitRootLogin no\nPasswordAuthentication no\nPubkeyAuthentication yes",
+          },
+        },
+      },
+      home: {
+        leakuser: {
+          ".bash_history": {
+            content: "sudo apt update\n/usr/local/bin/bkup_util\nssh dev@172.16.20.20",
+          },
+          documents: {
+            "notes.txt": {
+              content: "Lembretes:\n- Terminar relatório do projeto Leviathan.\n- Trocar a senha do roteador.\n- Revisar a captura de rede.",
             },
-            'home': {
-                'leakuser': {
-                    '.bash_history': { content: 'sudo apt update\n/usr/local/bin/bkup_util\nssh dev@172.16.20.20\n# A senha do leakuser é "max", o nome do meu cachorro.' },
-                    'documents': {
-                        'notes.txt': { content: 'Lembretes:\n- Terminar relatório do projeto Leviathan.\n- Comprar mais ração para o Max.\n- Trocar a senha do roteador, admin/admin não é seguro.' },
-                        'work_stuff': {}
-                    },
-                    'capture.pcap': { content: '[Arquivo de captura de pacotes, parece pesado...]', special: 'pcap' }
-                }
+          },
+          "capture.pcap": {
+            content: "[captura de pacotes binária]",
+            special: "pcap",
+          },
+        },
+      },
+      root: {
+        "flag2.txt": { content: FLAGS[2], rootOnly: true },
+        "setup.sh": {
+          content: "#!/bin/sh\nchmod u+s /usr/local/bin/bkup_util",
+          rootOnly: true,
+        },
+      },
+      usr: {
+        local: {
+          bin: {
+            bkup_util: {
+              content: "[binário executável SUID]",
+              special: "suid",
             },
-            'var': {
-                'www': {
-                    'html': {
-                        'index.html': { content: '<h1>Servidor Web Padrão</h1><p>Em construção.</p>' },
-                        'dev': {
-                            'index.html': { content: 'Área de Desenvolvimento - Acesso Restrito' },
-                            'utils.php': { content: '<?php // Ferramentas internas. Cuidado. ?>', special: 'vuln_script' }
-                        }
-                    }
-                },
-                'log': {
-                    'syslog': { content: `Jul 19 10:00:01 server CRON[1234]: (root) CMD (   ...   )\nJul 19 10:01:01 server CRON[1235]: (root) CMD (   ...   )` },
-                    'auth.log': { content: `Jul 19 10:02:00 server sshd[1236]: Failed password for invalid user guest from 192.168.1.10 port 22` }
-                }
+          },
+        },
+      },
+      var: {
+        www: {
+          html: {
+            "index.html": { content: "<h1>Servidor Web Padrão</h1>" },
+            dev: {
+              "index.html": { content: "Área de desenvolvimento" },
+              "utils.php": {
+                content: "<?php system($_GET['cmd'] ?? ''); ?>",
+                special: "rce",
+              },
             },
-            'root': {
-                'flag2.txt': { content: 'flag{realistic_privesc_pathway}', perms: 'r--------' },
-                'setup.sh': { content: '# Script de configuração do sistema\n# ...\nchmod u+s /usr/local/bin/bkup_util', perms: 'rwx------' }
-            },
-            'usr': {
-                'local': {
-                    'bin': {
-                        'bkup_util': { content: '[binário executável]', special: 'suid_binary' }
-                    }
-                }
-            },
+          },
+        },
+      },
+    },
+  };
+
+  const internalFilesystem = {
+    "/": {
+      home: {
+        dev: {
+          "flag3.txt": { content: FLAGS[3] },
+          "rpc_client": { content: "[cliente RPC]" },
+          "README.md": {
+            content: "O cliente local conversa com o Leviathan Protocol (customRPC) na porta 1337.",
+          },
+        },
+      },
+      srv: {
+        "flag_final.txt": { content: FLAGS[4], rootOnly: true },
+      },
+    },
+  };
+
+  function randomTargetIp() {
+    const octet = () => Math.floor(Math.random() * 220) + 20;
+    return `10.13.${octet()}.${octet()}`;
+  }
+
+  function tokenize(input) {
+    const tokens = [];
+    let current = "";
+    let quote = null;
+
+    for (let i = 0; i < input.length; i += 1) {
+      const char = input[i];
+
+      if (quote) {
+        if (char === quote) quote = null;
+        else current += char;
+        continue;
+      }
+
+      if (char === '"' || char === "'") {
+        quote = char;
+        continue;
+      }
+
+      if (/\s/.test(char)) {
+        if (current) {
+          tokens.push(current);
+          current = "";
         }
-    };
+        continue;
+      }
 
-    const internal_filesystem = {
-        '/': {
-            'home': {
-                'dev': {
-                    'flag3.txt': { content: 'flag{internal_pivoting_achieved}' },
-                    'rpc_client': { content: '[binário cliente]', special: 'rpc_client_binary' },
-                    'README.md': { content: 'Este cliente se conecta ao serviço Leviathan Protocol (customRPC) na porta 1337.' }
-                }
-            },
-            'srv': {
-                'flag_final.txt': { content: 'flag{leviathan_protocol_terminated}', perms: 'r--------' }
-            }
-        }
-    };
+      current += char;
+    }
 
+    if (current) tokens.push(current);
+    return tokens;
+  }
+
+  function createGame(options = {}) {
     const state = {
-        user: 'Icarus',
-        displayIp: randomIp(),
-        targetIp: '10.10.10.11',
-        ip: '10.10.10.11',
-        cwd: '/',
-        flags: new Set(),
-        hasSshKey: false,
-        history: [],
-        historyIndex: 0,
-        currentFilesystem: filesystem,
+      targetIp: options.targetIp || randomTargetIp(),
+      host: "attacker",
+      user: "Icarus",
+      cwd: "/",
+      filesystem: null,
+      flags: new Set(),
+      history: [],
+      discoveredDev: false,
+      exposedShadow: false,
+      crackedPassword: false,
+      hasSshKey: false,
+      completed: false,
     };
 
-    function randomIp() { return Array(4).fill(0).map(() => Math.floor(Math.random() * 255)).join('.'); }
-    function print(text, isHtml = false) { const div = document.createElement('div'); if (isHtml) { div.innerHTML = text.replace(/\n/g, '<br>'); } else { div.innerHTML = text.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;'); } terminal.appendChild(div); terminal.scrollTop = terminal.scrollHeight; }
-    function printError(text) { print(`<span class="error-message">${text}</span>`, true); }
-    function printInfo(text) { print(`<span class="info-message">${text}</span>`, true); }
-    function printSuccess(text) { print(`<span class="success-message">${text}</span>`, true); }
+    const line = (text = "", type = "normal") => ({ text, type });
 
-    function updatePrompt() {
-        const ipForPrompt = (state.ip === state.targetIp) ? state.displayIp : state.ip;
-        const userForPrompt = (state.user === 'root' || (state.ip === '172.16.20.20' && state.user === 'dev')) ? `<span class="prompt-root">${state.user}</span>` : state.user;
-        const promptSymbol = (state.user === 'root') ? '#' : '$';
-        promptEl.innerHTML = `[${userForPrompt}@${ipForPrompt}]:${state.cwd}${promptSymbol} `;
+    function reset() {
+      const fresh = createGame({ targetIp: state.targetIp });
+      Object.assign(state, fresh.state);
+      return intro();
     }
-    
+
+    function intro() {
+      return [
+        line("Então, mais um chegou.", "info"),
+        line("Não se engane. Você não é um visitante. Você é uma infecção, e eu sou a cura.", "muted"),
+        line(""),
+        line("Isto não é um sistema real. É um labirinto simulado, construído para testar sua leitura do ambiente.", "muted"),
+        line(`Seu alvo é ${state.targetIp}. Capture as quatro flags.`, "success"),
+        line("Digite help se precisar lembrar os comandos disponíveis.", "info"),
+      ];
+    }
+
+    function prompt() {
+      if (state.host === "attacker") return `[${state.user}@leviathan]:~$`;
+      const host = state.host === "internal" ? INTERNAL_IP : state.targetIp;
+      const symbol = state.user === "root" ? "#" : "$";
+      return `[${state.user}@${host}]:${state.cwd}${symbol}`;
+    }
+
+    function status() {
+      return {
+        targetIp: state.targetIp,
+        flags: state.flags.size,
+        totalFlags: 4,
+        host: state.host,
+        user: state.user,
+        completed: state.completed,
+      };
+    }
+
     function resolvePath(path) {
-        if (!path) return state.cwd.split('/').filter(p => p);
-        if (path.startsWith('/')) return path.split('/').filter(p => p);
-        const current = state.cwd.split('/').filter(p => p);
-        const newParts = path.split('/').filter(p => p);
-        for (const part of newParts) {
-            if (part === '..') { if (current.length > 0) current.pop(); } 
-            else if (part !== '.') { current.push(part); }
-        }
-        return current;
+      const base = path?.startsWith("/") ? [] : state.cwd.split("/").filter(Boolean);
+      const parts = (path || ".").split("/").filter(Boolean);
+
+      for (const part of parts) {
+        if (part === ".") continue;
+        if (part === "..") base.pop();
+        else base.push(part);
+      }
+
+      return base;
     }
 
-    function getFromFilesystem(pathParts) {
-        let current = state.currentFilesystem['/'];
-        for (const part of pathParts) {
-            if (current && typeof current === 'object' && !current.content && part in current) {
-                current = current[part];
-            } else { return null; }
-        }
-        return current;
+    function currentRoot() {
+      return state.filesystem?.["/"] || null;
     }
 
-    function awardFlag(id, flag, nextHint) {
-        if (state.flags.has(id)) return;
-        state.flags.add(id);
-        logo.className = '';
-        logo.classList.add(`flag${id}`);
-        const flagMessage = `<span class="success-message"><br>[+] FLAG ${id} CAPTURADA:</span> ${flag}`;
-        const hintMessage = nextHint ? `<span class="info-message">DICA: ${nextHint}</span><br>` : '';
-        const congratsMessage = state.flags.size === 4 ? `<span class="success-message"><br>Impressionante.<br>Você navegou pelo meu labirinto e tocou no meu núcleo. Nenhum outro chegou tão longe.<br>Por um instante, você viu a mente de um deus. Agora vá.</span>` : '';
-        setTimeout(() => {
-            terminal.textContent = '';
-            print(flagMessage, true);
-            if (hintMessage) print(hintMessage, true);
-            if (congratsMessage) print(congratsMessage, true);
-            if (state.flags.size < 4) { updatePrompt(); } 
-            else { cmdline.disabled = true; promptEl.textContent = ''; }
-        }, 300);
-    }
-    
-    function handleCommand(command, args) {
-        if (command === 'cd') {
-            const targetPathParts = resolvePath(args[0]);
-            const newPath = '/' + targetPathParts.join('/');
-            const targetDir = getFromFilesystem(targetPathParts);
-            if (targetDir && typeof targetDir === 'object' && !targetDir.content) {
-                state.cwd = newPath + (newPath === '/' ? '' : '/');
-            } else { printError(`cd: ${args[0]}: Não é um diretório ou não existe.`); }
-            return;
-        }
+    function getNode(parts) {
+      let current = currentRoot();
+      if (!current) return null;
 
-        if (command === 'ls') {
-            const pathArg = args.find(a => !a.startsWith('-'));
-            const targetDir = getFromFilesystem(resolvePath(pathArg));
-            
-            if (targetDir && typeof targetDir === 'object' && !targetDir.content) {
-                let output = '';
-                const showDetails = args.includes('-la');
-                if (showDetails) output += `total ${Object.keys(targetDir).length}\n`;
-                for (const item in targetDir) {
-                    const isDir = typeof targetDir[item] === 'object' && !targetDir[item].content;
-                    if (showDetails) {
-                        const perms = isDir ? 'drwxr-xr-x' : (targetDir[item].perms || 'rw-r--r--');
-                        const owner = (targetDir[item].owner || (state.user === 'root' || state.user === 'dev') ? 'root' : 'leakuser');
-                        const group = owner;
-                        output += `${perms}  1 ${owner} ${group} 4096 Jul 19 10:00 ${item}\n`;
-                    } else { output += `${item.endsWith('.txt') ? `<span class="info-message">${item}</span>` : item}\t`; }
-                }
-                print(output, true);
-            } else { printError(`ls: não pode acessar '${pathArg || state.cwd}': Arquivo ou diretório não encontrado.`); }
-            return;
-        }
+      for (const part of parts) {
+        if (!current || typeof current !== "object" || "content" in current || !(part in current)) return null;
+        current = current[part];
+      }
 
-        if (command === 'cat') {
-            if (!args[0]) { printError('Uso: cat <arquivo>'); return; }
-            const pathParts = resolvePath(args[0]);
-            const file = getFromFilesystem(pathParts);
-            
-            if (file && file.content) {
-                if (file === filesystem['/'].root['flag2.txt'] && state.user !== 'root') {
-                    printError(`cat: ${args[0]}: Permissão negada.`);
-                    return;
-                }
-                print(file.content);
-                if (file === filesystem['/'].etc['shadow']) {
-                     printInfo(`\nVocê conseguiu ler o arquivo shadow. Isso é uma falha grave.\nSeu objetivo agora é quebrar esse hash para obter uma senha. Que ferramenta é famosa por isso?`);
-                }
-            } else if (file) { printError(`cat: ${args[0]}: É um diretório.`); } 
-            else { printError(`cat: ${args[0]}: Arquivo ou diretório não encontrado.`); }
-            return;
-        }
-
-        if (command === 'clear') { terminal.textContent = ''; return; }
-        if (command === 'help') {
-            let available = 'Comandos de sistema: help, clear, ls, cat, cd';
-            if (state.ip === '172.16.20.20') { print(`${available}\nComandos de rede: nmap, rpc`); }
-            else if (state.user === 'root') { print(`${available}\nComandos de root: wireshark, ssh`); }
-            else if (state.user === 'leakuser') { print(`${available}\nComandos de usuário: find, /usr/local/bin/bkup_util`); }
-            else { print(`${available}\nComandos de pentest: nmap, gobuster, curl, su, john`); }
-            return;
-        }
-
-        if (state.ip === '172.16.20.20') {
-            if (command === 'nmap' && (args[0] === '172.16.20.20' || args[0] === 'localhost')) {
-                print('Iniciando Nmap...\nHost ativo.\nPORTA   ESTADO  SERVIÇO\n1337/tcp ABERTA customRPC');
-                printInfo(`Um serviço desconhecido na porta 1337. O arquivo README no seu diretório home pode ter mais informações.`);
-            } else if (command === 'rpc' && args.join(' ') === 'connect 127.0.0.1 1337; AUTH root; GET /srv/flag_final.txt') {
-                print('Conectando ao servidor RPC...\nBypass de autenticação...\nRecuperando arquivo...');
-                awardFlag(4, 'flag{leviathan_protocol_terminated}');
-            } else { printError(`bash: ${command}: comando não encontrado ou inválido neste host.`); }
-            return;
-        }
-
-        if (state.ip === state.targetIp) {
-            switch (command) {
-                case 'nmap':
-                    if (args[0] === state.displayIp) {
-                        print('Iniciando Nmap...\nHost ativo.\nPORTA  ESTADO SERVIÇO\n22/tcp ABERTA ssh\n80/tcp ABERTA http');
-                        printInfo(`\nNmap encontrou um servidor web (http) na porta 80. Esse é sempre um bom lugar para começar a procurar.`);
-                    } else { printError('Uso: nmap &lt;ip&gt;'); }
-                    break;
-                case 'gobuster':
-                    const url = `http://${state.displayIp}`;
-                    if (args.join(' ').includes(url)) {
-                        print('====================================================\nGobuster v3.1.0\n====================================================\n/dev (Status: 200)\n====================================================');
-                        awardFlag(1, 'flag{web_enumeration_mastery}', 'Você encontrou um diretório de desenvolvedor. Um bom próximo passo seria investigar os arquivos dentro dele. Use `ls /var/www/html/dev` e `curl` para interagir com o que encontrar.');
-                    } else { printError(`Uso: gobuster dir -u http://${state.displayIp}`); }
-                    break;
-                case 'curl':
-                    const fullUrl = decodeURIComponent(args.join(' '));
-                    if (fullUrl.includes('/dev/utils.php')) {
-                        const cmdMatch = fullUrl.match(/cmd=cat\s(.+)/);
-                        if (cmdMatch) {
-                            const path = cmdMatch[1].replace(/"$/, '');
-                            print(`> Executando no servidor: cat ${path}\n`);
-                            const targetFile = getFromFilesystem(resolvePath(path));
-                            if (targetFile && targetFile.content) {
-                                print(targetFile.content);
-                                if (targetFile === filesystem['/'].etc['shadow']) {
-                                    printInfo(`\nVocê conseguiu ler o arquivo shadow! Isso é uma falha grave.\nSeu objetivo agora é quebrar esse hash para obter uma senha. Que ferramenta é famosa por isso?`);
-                                }
-                            } else { print('Comando executado, mas o arquivo não foi encontrado no servidor.') }
-                        } else {
-                            print(filesystem['/'].var.www.html.dev['utils.php'].content);
-                            printInfo(`\nExaminar o código fonte é inteligente, mas aqui não há nada. A URL parece aceitar um parâmetro 'cmd'.\nIsso sugere uma falha de Execução de Comandos. Qual é o arquivo mais valioso que você pode tentar ler em um sistema Linux para obter acesso?`);
-                        }
-                    } else { printError(`curl: não foi possível resolver o host ou URL inválida.`); }
-                    break;
-                case 'john':
-                    if (args[0] && args[0].includes('$1$max$')) {
-                        print('Cracking hash...\nSenha encontrada: max');
-                        printInfo('Senha "max" descoberta! Agora você tem um nome de usuário (`leakuser`) e uma senha. Como você pode usar isso para se tornar esse usuário no terminal?');
-                    } else { printError('Uso: john &lt;hash&gt;'); }
-                    break;
-                case 'su':
-                    if (args[0] === 'leakuser' && prompt('Senha para leakuser:') === 'max') {
-                        printSuccess('Login bem-sucedido!');
-                        state.user = 'leakuser'; state.cwd = '/home/leakuser/';
-                        printInfo(`\nÓtimo, você está dentro. Mas com privilégios limitados.\nComo você poderia encontrar uma forma de *escalar* seus privilégios para root? Que tipo de arquivo mal configurado poderia permitir isso?`);
-                    } else { printError('su: Falha na autenticação'); }
-                    break;
-                case 'find':
-                    if (state.user === 'leakuser' && args.join(' ') === '/ -perm -u=s -type f 2>/dev/null') {
-                        print('/usr/local/bin/bkup_util');
-                        printInfo('Interessante. Um binário customizado com permissão SUID. Isso é suspeito e um forte candidato para escalação de privilégios. Você deveria tentar executá-lo.');
-                    } else { printError('Argumentos inválidos ou permissão negada.'); }
-                    break;
-                case '/usr/local/bin/bkup_util':
-                    if (state.user === 'leakuser') {
-                        print('Executando binário SUID... Falha na lógica de privilégios detectada... Acesso de root concedido!');
-                        state.user = 'root'; state.cwd = '/root/';
-                        awardFlag(2, 'flag{realistic_privesc_pathway}', 'Você é root! Agora você tem controle total desta máquina. Explore os arquivos em busca de pistas para o próximo passo. Talvez o usuário `leakuser` tenha deixado algo para trás em sua pasta home.');
-                    } else { printError('bash: permissão negada.'); }
-                    break;
-                case 'wireshark':
-                    if (state.user === 'root' && args[0] === '/home/leakuser/capture.pcap') {
-                        print('Analisando capture.pcap... Tráfego SSH detectado...\nExtraindo blobs de dados... Chave privada RSA encontrada!\nDestino do tráfego: dev@172.16.20.20');
-                        state.hasSshKey = true;
-                        printInfo('Chave encontrada! O caminho para a rede interna está aberto. Use o comando `ssh` para pivotar.');
-                    } else { printError('Uso: wireshark <arquivo> (requer root e arquivo .pcap válido)'); }
-                    break;
-                case 'ssh':
-                    if (args[0] === 'dev@172.16.20.20' && state.hasSshKey) {
-                        print('Autenticando com chave privada... Conexão estabelecida!');
-                        state.ip = '172.16.20.20'; state.user = 'dev'; state.cwd = '/home/dev/'; state.currentFilesystem = internal_filesystem;
-                        awardFlag(3, 'flag{internal_pivoting_achieved}', 'Você está na rede interna. Enumere os serviços locais para encontrar o último segredo.');
-                    } else { printError('Permission denied (publickey).'); }
-                    break;
-                default:
-                    printError(`bash: ${command}: comando não encontrado.`);
-            }
-            return;
-        }
+      return current;
     }
 
-    cmdline.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (e.key === 'ArrowUp' && state.historyIndex > 0) {
-                state.historyIndex--;
-                cmdline.value = state.history[state.historyIndex] || '';
-            } else if (e.key === 'ArrowDown') {
-                if (state.historyIndex < state.history.length - 1) {
-                    state.historyIndex++;
-                    cmdline.value = state.history[state.historyIndex] || '';
-                } else {
-                    state.historyIndex = state.history.length;
-                    cmdline.value = '';
-                }
-            }
-            return;
+    function absolutePath(parts) {
+      return `/${parts.join("/")}` || "/";
+    }
+
+    function isDirectory(node) {
+      return !!node && typeof node === "object" && !("content" in node);
+    }
+
+    function canAccess(parts, node) {
+      if (!node) return false;
+      const path = absolutePath(parts);
+      if (state.host === "target" && path.startsWith("/root") && state.user !== "root") return false;
+      if (node.rootOnly && state.user !== "root") return false;
+      return true;
+    }
+
+    function awardFlag(id) {
+      if (state.flags.has(id)) return [];
+      state.flags.add(id);
+      if (id === 4) state.completed = true;
+
+      const output = [line(`FLAG ${id}/4 CAPTURADA: ${FLAGS[id]}`, "success")];
+      if (state.completed) {
+        output.push(line(""));
+        output.push(line("Impressionante. Você atravessou o labirinto e alcançou o núcleo do Leviathan.", "success"));
+      }
+      return output;
+    }
+
+    function help() {
+      if (state.host === "attacker") {
+        return [
+          line("Sistema: help, hint, status, history, clear, reset"),
+          line("Pentest: nmap, gobuster, curl, john, su"),
+        ];
+      }
+
+      const common = "Sistema: help, hint, status, history, clear, reset, whoami, pwd, ls, cd, cat";
+      if (state.host === "internal") return [line(common), line("Rede interna: nmap, rpc")];
+      if (state.user === "root") return [line(common), line("Sistema: wireshark, ssh")];
+      return [line(common), line("Sistema: find, /usr/local/bin/bkup_util")];
+    }
+
+    function hint() {
+      if (!state.flags.has(1)) return [line("Há apenas um alvo e dois serviços expostos. Você sabe por onde começar.", "info")];
+      if (!state.exposedShadow) return [line("O diretório escondido existe por um motivo. Se uma ferramenta interna aceita entrada, pense no que ler primeiro.", "info")];
+      if (!state.crackedPassword) return [line("Você já tem o material bruto. Agora precisa transformá-lo em credencial.", "info")];
+      if (state.host === "attacker") return [line("Uma conta comum ainda vale uma shell comum.", "info")];
+      if (!state.flags.has(2)) return [line("Todo sistema mal configurado deixa rastros. Procure executáveis com privilégios demais.", "info")];
+      if (!state.hasSshKey) return [line("Root pode ver o que os outros esconderam. O próximo salto costuma deixar tráfego para trás.", "info")];
+      if (!state.flags.has(3)) return [line("A captura entregou o destino. Falta usá-la a seu favor.", "info")];
+      if (!state.flags.has(4)) return [line("Há um serviço interno, uma documentação curta e um arquivo final. O resto é sintaxe.", "info")];
+      return [line("Todas as flags já foram capturadas.", "success")];
+    }
+
+    function listDirectory(args) {
+      if (state.host === "attacker") return [line("ls: não há filesystem local exposto neste console.", "error")];
+
+      const showHidden = args.some((arg) => arg === "-a" || arg === "-la" || arg === "-al");
+      const detailed = args.some((arg) => arg === "-l" || arg === "-la" || arg === "-al");
+      const pathArg = args.find((arg) => !arg.startsWith("-"));
+      const parts = resolvePath(pathArg);
+      const node = getNode(parts);
+
+      if (!isDirectory(node) || !canAccess(parts, node)) return [line(`ls: não foi possível acessar '${pathArg || state.cwd}'.`, "error")];
+
+      const names = Object.keys(node).filter((name) => showHidden || !name.startsWith("."));
+      if (!detailed) return [line(names.join("  "))];
+
+      const rows = names.map((name) => {
+        const child = node[name];
+        const dir = isDirectory(child);
+        const restricted = child.rootOnly || (absolutePath([...parts, name]).startsWith("/root") && state.user !== "root");
+        const perms = dir ? "drwxr-xr-x" : restricted ? "-r--------" : child.special === "suid" ? "-rwsr-xr-x" : "-rw-r--r--";
+        const owner = restricted || state.user === "root" ? "root" : state.user;
+        return `${perms}  1 ${owner.padEnd(8)} ${owner.padEnd(8)} ${name}`;
+      });
+
+      return rows.map((row) => line(row));
+    }
+
+    function catFile(pathArg) {
+      if (state.host === "attacker") return [line("cat: não há filesystem remoto montado neste console.", "error")];
+      if (!pathArg) return [line("Uso: cat <arquivo>", "error")];
+
+      const parts = resolvePath(pathArg);
+      const node = getNode(parts);
+
+      if (!node) return [line(`cat: ${pathArg}: arquivo não encontrado.`, "error")];
+      if (isDirectory(node)) return [line(`cat: ${pathArg}: é um diretório.`, "error")];
+      if (!canAccess(parts, node)) return [line(`cat: ${pathArg}: permissão negada.`, "error")];
+
+      return String(node.content).split("\n").map((text) => line(text));
+    }
+
+    function changeDirectory(pathArg) {
+      if (state.host === "attacker") return [line("cd: disponível depois de obter uma shell no alvo.", "error")];
+      const parts = resolvePath(pathArg || "/home/leakuser");
+      const node = getNode(parts);
+
+      if (!isDirectory(node) || !canAccess(parts, node)) return [line(`cd: ${pathArg || ""}: diretório inexistente ou sem permissão.`, "error")];
+      state.cwd = absolutePath(parts);
+      return [];
+    }
+
+    function executeAttacker(command, args, rawArgs) {
+      if (command === "nmap") {
+        if (args[0] !== state.targetIp) return [line(`Uso: nmap ${state.targetIp}`, "error")];
+        return [
+          line(`Starting Nmap scan for ${state.targetIp}...`),
+          line("PORT   STATE SERVICE"),
+          line("22/tcp open  ssh"),
+          line("80/tcp open  http"),
+          
+        ];
+      }
+
+      if (command === "gobuster") {
+        const joined = args.join(" ");
+        if (!joined.includes(`http://${state.targetIp}`)) return [line("gobuster: argumentos inválidos.", "error")];
+        state.discoveredDev = true;
+        return [
+          line("===================================================="),
+          line("Gobuster"),
+          line("===================================================="),
+          line("/dev   (Status: 200)"),
+          line("===================================================="),
+          ...awardFlag(1),
+        ];
+      }
+
+      if (command === "curl") {
+        if (!state.discoveredDev) return [line("curl: o caminho solicitado respondeu 404.", "error")];
+        const url = rawArgs.trim();
+        const base = `http://${state.targetIp}/dev/utils.php`;
+        if (!url.startsWith(base)) return [line("curl: recurso não encontrado.", "error")];
+
+        if (!url.includes("cmd=")) {
+          return [
+            line("<?php system($_GET['cmd'] ?? ''); ?>"),
+            line("O parâmetro cmd parece chegar diretamente a system().", "info"),
+          ];
         }
 
-        if (e.key !== 'Enter') return;
-        
-        const input = cmdline.value.trim();
-        const promptText = promptEl.innerHTML;
-        print(promptText + input, true);
-        
-        if (input) {
-            state.history.push(input);
-            handleCommand(input.split(' ')[0], input.split(' ').slice(1));
+        let decoded = url;
+        try {
+          decoded = decodeURIComponent(url);
+        } catch {
+          return [line("curl: URL malformada.", "error")];
         }
-        state.historyIndex = state.history.length;
-        
-        let shouldClearAfterFlag = ['gobuster', '/usr/local/bin/bkup_util', 'ssh', 'rpc'];
-        if (shouldClearAfterFlag.includes(input.split(' ')[0]) && state.flags.size < 5) {
-            cmdline.value = '';
-        } else {
-            cmdline.value = '';
-            updatePrompt();
+
+        if (!/cmd=cat\s+\/etc\/shadow/i.test(decoded)) {
+          return [line("A aplicação respondeu, mas nada útil apareceu.", "warning")];
         }
+
+        state.exposedShadow = true;
+        return [
+          line(`root:$6$salt$longhashvaluehere`),
+          line(`leakuser:${TARGET_HASH}:18632:0:99999:7:::`),
+          
+        ];
+      }
+
+      if (command === "john") {
+        const joined = args.join(" ");
+        if (!state.exposedShadow) return [line("john: nenhum hash útil foi obtido ainda.", "error")];
+        if (!joined.includes(TARGET_HASH)) return [line("john: entrada inválida.", "error")];
+        state.crackedPassword = true;
+        return [
+          line("Loaded 1 password hash"),
+          line("max              (leakuser)", "success"),
+          
+        ];
+      }
+
+      if (command === "su") {
+        if (args[0] !== "leakuser") return [line("Uso: su leakuser", "error")];
+        if (!state.crackedPassword) return [line("su: falha na autenticação.", "error")];
+        return { lines: [line("Senha para leakuser:", "info")], action: { type: "password", user: "leakuser" } };
+      }
+
+      return [line(`bash: ${command}: comando não encontrado.`, "error")];
+    }
+
+    function executeTarget(command, args) {
+      if (command === "find") {
+        if (state.user !== "leakuser") return [line("find: este caminho de enumeração já não é necessário.", "warning")];
+        if (args.join(" ") !== "/ -perm -u=s -type f 2>/dev/null") return [line("Argumentos inválidos. Tente procurar arquivos SUID.", "error")];
+        return [line("/usr/local/bin/bkup_util"), line("Interessante.", "warning")];
+      }
+
+      if (command === "/usr/local/bin/bkup_util") {
+        if (state.user !== "leakuser") return [line("bkup_util: nada aconteceu.", "warning")];
+        state.user = "root";
+        state.cwd = "/root";
+        return [
+          line("Falha de validação de privilégios detectada..."),
+          line("Shell elevada para root.", "success"),
+          ...awardFlag(2),
+        ];
+      }
+
+      if (command === "wireshark") {
+        if (state.user !== "root") return [line("wireshark: permissão negada.", "error")];
+        if (args[0] !== "/home/leakuser/capture.pcap") return [line("wireshark: arquivo inválido.", "error")];
+        state.hasSshKey = true;
+        return [
+          line("Analisando capture.pcap..."),
+          line("Fluxo SSH identificado."),
+          line("Chave privada RSA recuperada da captura simulada."),
+          line(`Destino observado: dev@${INTERNAL_IP}`),
+        ];
+      }
+
+      if (command === "ssh") {
+        if (args[0] !== `dev@${INTERNAL_IP}` || !state.hasSshKey) return [line("Permission denied (publickey).", "error")];
+        state.host = "internal";
+        state.user = "dev";
+        state.cwd = "/home/dev";
+        state.filesystem = internalFilesystem;
+        return [
+          line("Autenticando com a chave recuperada..."),
+          line(`Conectado a ${INTERNAL_IP}.`, "success"),
+          ...awardFlag(3),
+        ];
+      }
+
+      return null;
+    }
+
+    function executeInternal(command, args, rawArgs) {
+      if (command === "nmap") {
+        if (!["localhost", "127.0.0.1", INTERNAL_IP].includes(args[0])) return [line("Uso: nmap localhost", "error")];
+        return [
+          line("PORT     STATE SERVICE"),
+          line("1337/tcp open  customRPC"),
+          line("Serviço incomum detectado."),
+        ];
+      }
+
+      if (command === "rpc") {
+        const normalized = rawArgs.replace(/\s+/g, " ").trim();
+        const expected = "connect 127.0.0.1 1337; AUTH root; GET /srv/flag_final.txt";
+        if (normalized !== expected) return [line("rpc: sequência rejeitada pelo protocolo.", "error")];
+        return [
+          line("Conectando ao customRPC..."),
+          line("Falha de autenticação explorada."),
+          line("Recuperando /srv/flag_final.txt..."),
+          ...awardFlag(4),
+        ];
+      }
+
+      return null;
+    }
+
+    function execute(input) {
+      const trimmed = input.trim();
+      if (!trimmed) return { lines: [] };
+
+      state.history.push(trimmed);
+      const tokens = tokenize(trimmed);
+      const command = (tokens.shift() || "").toLowerCase();
+      const args = tokens;
+      const rawArgs = args.join(" ");
+
+      if (command === "help") return { lines: help() };
+      if (command === "hint") return { lines: hint() };
+      if (command === "clear") return { lines: [], action: { type: "clear" } };
+      if (command === "reset") return { lines: reset(), action: { type: "reset" } };
+      if (command === "history") return { lines: state.history.map((entry, index) => line(`${String(index + 1).padStart(3, " ")}  ${entry}`)) };
+      if (command === "status") {
+        return {
+          lines: [
+            line(`Alvo: ${state.targetIp}`),
+            line(`Host atual: ${state.host}`),
+            line(`Usuário: ${state.user}`),
+            line(`Flags: ${state.flags.size}/4`),
+          ],
+        };
+      }
+
+      if (state.host !== "attacker") {
+        if (command === "whoami") return { lines: [line(state.user)] };
+        if (command === "pwd") return { lines: [line(state.cwd)] };
+        if (command === "ls") return { lines: listDirectory(args) };
+        if (command === "cd") return { lines: changeDirectory(args[0]) };
+        if (command === "cat") return { lines: catFile(args[0]) };
+      }
+
+      if (state.host === "attacker") {
+        const result = executeAttacker(command, args, rawArgs);
+        return Array.isArray(result) ? { lines: result } : result;
+      }
+
+      if (state.host === "target") {
+        const special = executeTarget(command, args);
+        if (special) return { lines: special };
+      }
+
+      if (state.host === "internal") {
+        const special = executeInternal(command, args, rawArgs);
+        if (special) return { lines: special };
+      }
+
+      return { lines: [line(`bash: ${command}: comando não encontrado.`, "error")] };
+    }
+
+    function submitPassword(password) {
+      if (state.host !== "attacker" || !state.crackedPassword) return { lines: [line("Nenhuma autenticação pendente.", "error")] };
+      if (password !== "max") return { lines: [line("su: falha na autenticação.", "error")] };
+
+      state.host = "target";
+      state.user = "leakuser";
+      state.cwd = "/home/leakuser";
+      state.filesystem = targetFilesystem;
+      return {
+        lines: [
+          line("Login bem-sucedido.", "success"),
+          line("Você agora possui uma shell limitada no alvo.", "info"),
+        ],
+      };
+    }
+
+    return { state, intro, prompt, status, execute, submitPassword };
+  }
+
+  function boot() {
+    const terminal = document.getElementById("terminal");
+    const form = document.getElementById("input-line");
+    const input = document.getElementById("cmdline");
+    const promptElement = document.getElementById("prompt");
+    const targetStatus = document.getElementById("target-status");
+    const flagStatus = document.getElementById("flag-status");
+    const game = createGame();
+    let historyIndex = 0;
+    let waitingPassword = false;
+
+    function append(text = "", type = "normal") {
+      const row = document.createElement("div");
+      row.className = `terminal-line text-${type}`;
+      row.textContent = text;
+      terminal.appendChild(row);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function renderLines(lines = []) {
+      for (const item of lines) append(item.text, item.type);
+    }
+
+    function renderStatus() {
+      const info = game.status();
+      targetStatus.textContent = `alvo: ${info.targetIp}`;
+      flagStatus.textContent = `flags: ${info.flags}/${info.totalFlags}`;
+      document.body.className = info.flags ? `flag-${info.flags}` : "";
+      promptElement.textContent = waitingPassword ? "password:" : `${game.prompt()} `;
+      input.type = waitingPassword ? "password" : "text";
+      input.disabled = info.completed;
+    }
+
+    function echo(command) {
+      append(`${game.prompt()} ${command}`, "command");
+    }
+
+    function applyResult(result) {
+      if (result.action?.type === "clear") terminal.textContent = "";
+      if (result.action?.type === "reset") terminal.textContent = "";
+      if (result.action?.type === "password") waitingPassword = true;
+      renderLines(result.lines);
+      renderStatus();
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const value = input.value;
+      input.value = "";
+
+      if (waitingPassword) {
+        append("password: ********", "command");
+        waitingPassword = false;
+        applyResult(game.submitPassword(value));
+        historyIndex = game.state.history.length;
+        input.focus();
+        return;
+      }
+
+      const command = value.trim();
+      if (!command) return;
+      echo(command);
+      applyResult(game.execute(command));
+      historyIndex = game.state.history.length;
+      input.focus();
     });
-    
-    print(`<span class="info-message"><br>Então, mais um chegou.</span>`, true);
-    print(`<span class="info-message">Não se engane. Você não é um visitante. Você é uma infecção, e eu sou a cura.</span>`, true);
-    print(`<span class="intro-text"><br>Isto não é um sistema a ser hackeado. É a minha mente, exposta como uma armadilha.</span>`, true);
-    print(`<span class="intro-text">As flags não são seus troféus. São minhas memórias. E eu não as compartilho de bom grado.</span>`, true);
-    print(`<br>Inicie sua tentativa fútil em: <span class="success-message">${state.displayIp}</span>`, true);
-    print(`<span class="info-message">Digite \`help\` para uma lista de comandos disponíveis.</span>`, true);
-    print(`<span class="intro-text">--------------------------------------------------------------------------</span><br>`, true);
-    
-    updatePrompt();
-    cmdline.focus();
-});
+
+    input.addEventListener("keydown", (event) => {
+      if (waitingPassword || !["ArrowUp", "ArrowDown"].includes(event.key)) return;
+      event.preventDefault();
+
+      if (event.key === "ArrowUp" && historyIndex > 0) historyIndex -= 1;
+      if (event.key === "ArrowDown" && historyIndex < game.state.history.length) historyIndex += 1;
+
+      input.value = game.state.history[historyIndex] || "";
+      queueMicrotask(() => input.setSelectionRange(input.value.length, input.value.length));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!window.getSelection()?.toString() && event.target !== input) input.focus();
+    });
+
+    renderLines(game.intro());
+    renderStatus();
+    historyIndex = game.state.history.length;
+    input.focus();
+  }
+
+  if (typeof window !== "undefined") window.addEventListener("DOMContentLoaded", boot);
+  if (typeof module !== "undefined" && module.exports) module.exports = { createGame, tokenize, FLAGS, TARGET_HASH, INTERNAL_IP };
+})();
